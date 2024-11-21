@@ -201,9 +201,11 @@ public class SVGImpl {
 
 	public void setWidth(Element element, int width) {
 		SVGUtil.setAttributeNS(element, "width", width);
+/*
 		if (element.tagName().equalsIgnoreCase("svg")) {
 			new Styles(element.parent()).setPropertyPx("width", width);
 		}
+*/
 	}
 
 	public int getHeight(Element element) {
@@ -212,10 +214,12 @@ public class SVGImpl {
 
 	public void setHeight(Element element, int height) {
 		SVGUtil.setAttributeNS(element, "height", height);
+/*
 		if (element.tagName().equalsIgnoreCase("svg")) {
 			new Styles(element.parent())
 					.setPropertyPx("height", height);
 		}
+*/
 	}
 
 	public int getCircleRadius(Element element) {

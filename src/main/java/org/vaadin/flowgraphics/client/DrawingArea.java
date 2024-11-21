@@ -70,6 +70,8 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 	 */
 	public DrawingArea(int width, int height) {
 		root = getImpl().createDrawingArea(null, width, height);
+		setWidth(width);
+		setHeight(height);
 	}
 
 	protected SVGImpl getImpl() {
@@ -195,7 +197,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 	 *            the new width in pixels
 	 */
 	public void setWidth(int width) {
-		getImpl().setWidth(root, width);
+		setWidth(width + "px");
 	}
 
 	/**
@@ -205,7 +207,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 	 *            the new height
 	 */
 	public void setHeight(int height) {
-		getImpl().setHeight(root, height);
+		setHeight(height + "px");
 	}
 
 	/*
@@ -219,7 +221,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 		boolean successful = false;
 		if (height != null && height.endsWith("px")) {
 			try {
-				setHeight(Integer.parseInt(height.substring(0,
+				getImpl().setHeight(root, Integer.parseInt(height.substring(0,
 						height.length() - 2)));
 				successful = true;
 			} catch (NumberFormatException e) {
@@ -238,10 +240,11 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 	 */
 	@Override
 	public void setWidth(String width) {
+		super.setWidth(width);
 		boolean successful = false;
 		if (width != null && width.endsWith("px")) {
 			try {
-				setWidth(Integer
+				getImpl().setWidth(root, Integer
 						.parseInt(width.substring(0, width.length() - 2)));
 				successful = true;
 			} catch (NumberFormatException e) {
@@ -280,5 +283,9 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 			vo.onDetach();
 		}
 		super.onDetach(detachEvent);
+	}
+
+	public void flush() {
+		getElement().setProperty("innerHTML", root.toString());
 	}
 }
