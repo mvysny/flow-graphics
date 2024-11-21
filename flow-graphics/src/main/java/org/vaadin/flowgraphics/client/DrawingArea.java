@@ -293,7 +293,10 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 
 	public void flush() {
 		getElement().setProperty("innerHTML", root.toString());
-		flushRegistration = null;
+		if (flushRegistration != null) {
+			flushRegistration.remove();
+			flushRegistration = null;
+		}
 	}
 
 	private StateTree.ExecutionRegistration flushRegistration = null;
