@@ -76,6 +76,14 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 		setHeight(height);
 	}
 
+	/**
+	 * If you modify this element directly, don't forget to call {@link #flushLazy()}!
+	 * @return the root SVG element.
+	 */
+	public Element getSvgElement() {
+		return root;
+	}
+
 	protected SVGImpl getImpl() {
 		return impl;
 	}
