@@ -29,6 +29,10 @@ circle.setFillColor("red");
 canvas.add(circle);
 ```
 
+## Demo
+
+The demo app is available; open the `Main` class located in the `demo-app` module, and run the `main()` method.
+
 ## Migrating your project from GWT Graphics to Flow Graphics
 
 TODO
