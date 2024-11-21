@@ -98,6 +98,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 		getImpl().add(root, vo.getElement(), vo.isAttached());
 		vo.setParent(this);
 		childrens.add(vo);
+		flush();
 		return vo;
 	}
 
@@ -120,6 +121,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 		childrens.add(beforeIndex, vo);
 		vo.setParent(this);
 		getImpl().insert(root, vo.getElement(), beforeIndex, vo.isAttached());
+		flush();
 
 		return vo;
 	}
@@ -136,6 +138,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 			return null;
 		}
 		getImpl().bringToFront(root, vo.getElement());
+		flush();
 		return vo;
 	}
 
@@ -153,6 +156,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 		vo.setParent(null);
 		vo.getElement().remove();
 		childrens.remove(vo);
+		flush();
 		return vo;
 	}
 
