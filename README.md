@@ -6,7 +6,7 @@ A drop-in replacement for the [GWT Graphics](https://vaadin.com/directory/compon
 add-on, but works with Vaadin 23+.
 
 Designed to be used side-by-side with the old GWT Graphics add-on, so that your
-project can be migrated gradually. Instead of the `org.vaadin.gwtgraphics` package,
+project can be migrated gradually. Instead of the `org.vaadin.flowgraphics` package,
 classes are stored in the `org.vaadin.flowgraphics` package.
 
 ## About
