@@ -84,7 +84,9 @@ subprojects {
         }
 
         signing {
-            sign(publishing.publications["mavenJava"])
+            if (gradle.startParameter.taskNames.contains("publish")) {
+                sign(publishing.publications["mavenJava"])
+            }
         }
     }
 
