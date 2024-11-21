@@ -1,0 +1,7 @@
+[versions]
+vaadin = "24.4.1"
+
+[libraries]
+vaadin-core = { module = "com.vaadin:vaadin-core", version.ref = "vaadin" }
+# https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-engine/
+junit = "org.junit.jupiter:junit-jupiter-engine:5.11.0"

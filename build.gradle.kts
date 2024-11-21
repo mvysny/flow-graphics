@@ -17,7 +17,10 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.11.0")
+    compileOnly(libs.vaadin.core)
+    testImplementation(libs.vaadin.core)
+
+    testImplementation(libs.junit)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
