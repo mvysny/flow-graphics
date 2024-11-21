@@ -9,8 +9,8 @@ plugins {
 defaultTasks("clean", "build")
 
 allprojects {
-    group = "com.gitlab.mvysny.jdbiorm"
-    version = "2.10-SNAPSHOT"
+    group = "com.github.mvysny.flow-graphics"
+    version = "1.0.0-SNAPSHOT"
 
     repositories {
         mavenCentral()
