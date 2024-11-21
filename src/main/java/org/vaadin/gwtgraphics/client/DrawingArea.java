@@ -18,9 +18,13 @@ package org.vaadin.gwtgraphics.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.ClickNotifier;
+import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.html.Div;
 import org.jsoup.nodes.Element;
+import org.vaadin.gwtgraphics.client.gwt.Widget;
 import org.vaadin.gwtgraphics.client.impl.SVGImpl;
 
 /**
@@ -50,7 +54,7 @@ import org.vaadin.gwtgraphics.client.impl.SVGImpl;
  * @author Henri Kerola
  * 
  */
-public class DrawingArea extends Div implements VectorObjectContainer, ClickNotifier<DrawingArea> {
+public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 
 	private static final SVGImpl impl = new SVGImpl();
 
@@ -67,10 +71,7 @@ public class DrawingArea extends Div implements VectorObjectContainer, ClickNoti
 	 *            the height of DrawingArea in pixels
 	 */
 	public DrawingArea(int width, int height) {
-		Element container = new Element("div");
-		setElement(container);
-
-		root = getImpl().createDrawingArea(container, width, height);
+		root = getImpl().createDrawingArea(null, width, height);
 	}
 
 	protected SVGImpl getImpl() {
@@ -150,7 +151,7 @@ public class DrawingArea extends Div implements VectorObjectContainer, ClickNoti
 			return null;
 		}
 		vo.setParent(null);
-		root.removeChild(vo.getElement());
+		vo.getElement().remove();
 		childrens.remove(vo);
 		return vo;
 	}
@@ -190,15 +191,6 @@ public class DrawingArea extends Div implements VectorObjectContainer, ClickNoti
 	}
 
 	/**
-	 * Returns the width of the DrawingArea in pixels.
-	 * 
-	 * @return the width of the DrawingArea in pixels.
-	 */
-	public int getWidth() {
-		return getImpl().getWidth(root);
-	}
-
-	/**
 	 * Sets the width of the DrawingArea in pixels.
 	 * 
 	 * @param width
@@ -206,15 +198,6 @@ public class DrawingArea extends Div implements VectorObjectContainer, ClickNoti
 	 */
 	public void setWidth(int width) {
 		getImpl().setWidth(root, width);
-	}
-
-	/**
-	 * Returns the height of the DrawingArea in pixels.
-	 * 
-	 * @return the height of the DrawingArea in pixels.
-	 */
-	public int getHeight() {
-		return getImpl().getHeight(root);
 	}
 
 	/**
@@ -234,6 +217,7 @@ public class DrawingArea extends Div implements VectorObjectContainer, ClickNoti
 	 */
 	@Override
 	public void setHeight(String height) {
+		super.setHeight(height);
 		boolean successful = false;
 		if (height != null && height.endsWith("px")) {
 			try {
@@ -279,119 +263,24 @@ public class DrawingArea extends Div implements VectorObjectContainer, ClickNoti
 	 */
 	@Override
 	public void setStyleName(String style) {
-		getElement().setClassName(
+		getElement().getClassList().clear();
+		getElement().getClassList().add(
 				style + " " + style + "-" + getImpl().getStyleSuffix());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasClickHandlers#addClickHandler(com.
-	 * google.gwt.event.dom.client.ClickHandler)
-	 */
-	public HandlerRegistration addClickHandler(ClickHandler handler) {
-		return addDomHandler(handler, ClickEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasDoubleClickHandlers#addDoubleClickHandler
-	 * (com.google.gwt.event.dom.client.DoubleClickHandler)
-	 */
-	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
-		return addDomHandler(handler, DoubleClickEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseDownHandlers#addMouseDownHandler
-	 * (com.google.gwt.event.dom.client.MouseDownHandler)
-	 */
-	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
-		return addDomHandler(handler, MouseDownEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseUpHandlers#addMouseUpHandler(
-	 * com.google.gwt.event.dom.client.MouseUpHandler)
-	 */
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-		return addDomHandler(handler, MouseUpEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseOutHandlers#addMouseOutHandler
-	 * (com.google.gwt.event.dom.client.MouseOutHandler)
-	 */
-	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-		return addDomHandler(handler, MouseOutEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseOverHandlers#addMouseOverHandler
-	 * (com.google.gwt.event.dom.client.MouseOverHandler)
-	 */
-	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-		return addDomHandler(handler, MouseOverEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseMoveHandlers#addMouseMoveHandler
-	 * (com.google.gwt.event.dom.client.MouseMoveHandler)
-	 */
-	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-		return addDomHandler(handler, MouseMoveEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseWheelHandlers#addMouseWheelHandler
-	 * (com.google.gwt.event.dom.client.MouseWheelHandler)
-	 */
-	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-		return addDomHandler(handler, MouseWheelEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.gwt.user.client.ui.Widget#doAttachChildren()
-	 */
 	@Override
-	protected void doAttachChildren() {
+	protected void onAttach(AttachEvent attachEvent) {
+		super.onAttach(attachEvent);
 		for (VectorObject vo : childrens) {
 			vo.onAttach();
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.google.gwt.user.client.ui.Widget#doDetachChildren()
-	 */
 	@Override
-	protected void doDetachChildren() {
+	protected void onDetach(DetachEvent detachEvent) {
 		for (VectorObject vo : childrens) {
 			vo.onDetach();
 		}
+		super.onDetach(detachEvent);
 	}
 }

@@ -64,8 +64,10 @@ public class SVGImpl {
 	public Element createDrawingArea(Element container, int width, int height) {
 		Element root = SVGUtil.createSVGElementNS("svg");
 		// IE9 needs this to crop overflowing content
-		root.setAttribute("overflow", "hidden");
-		container.appendChild(root);
+		root.attr("overflow", "hidden");
+		if (container != null) {
+			container.appendChild(root);
+		}
 		setWidth(root, width);
 		setHeight(root, height);
 

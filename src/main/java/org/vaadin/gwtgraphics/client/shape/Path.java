@@ -224,7 +224,7 @@ public class Path extends Shape {
 	}
 
 	/**
-	 * Draws a cubic BŽzier curve.
+	 * Draws a cubic Bezier curve.
 	 * 
 	 * @param x1
 	 * @param y1
@@ -239,7 +239,7 @@ public class Path extends Shape {
 	}
 
 	/**
-	 * Draws a cubic BŽzier curve.
+	 * Draws a cubic Bezier curve.
 	 * 
 	 * @param x1
 	 * @param y1

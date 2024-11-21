@@ -16,7 +16,7 @@
 package org.vaadin.gwtgraphics.client.shape.path;
 
 /**
- * This class represents Path's curveto step. Draws a cubic bézier curve from
+ * This class represents Path's curveto step. Draws a cubic bezier curve from
  * the current point to (x, y). (x1, y1) is the control point for the beginning
  * of the curve. (x2, y2) is the control point for the end of the curve.
  * 

@@ -15,6 +15,7 @@
  */
 package org.vaadin.gwtgraphics.client;
 
+import org.vaadin.gwtgraphics.client.gwt.AbstractWidget;
 import org.vaadin.gwtgraphics.client.gwt.Widget;
 import org.vaadin.gwtgraphics.client.impl.SVGImpl;
 
@@ -23,7 +24,7 @@ import org.vaadin.gwtgraphics.client.impl.SVGImpl;
  * 
  * @author Henri Kerola
  */
-public abstract class VectorObject extends Widget {
+public abstract class VectorObject extends AbstractWidget {
 
 	private Widget parent;
 
@@ -54,7 +55,7 @@ public abstract class VectorObject extends Widget {
 	public void setParent(Widget parent) {
 		Widget oldParent = this.parent;
 		if (parent == null) {
-			if (oldParent != null && oldParent.isAttached()) {
+			if (oldParent != null && oldParent.isAttachedGWT()) {
 				onDetach();
 				assert !isAttached() : "Failure of "
 						+ this.getClass().getName()
@@ -67,7 +68,7 @@ public abstract class VectorObject extends Widget {
 						"Cannot set a new parent without first clearing the old parent");
 			}
 			this.parent = parent;
-			if (parent.isAttached()) {
+			if (parent.isAttachedGWT()) {
 				onAttach();
 				assert isAttached() : "Failure of " + this.getClass().getName()
 						+ " to call super.onAttach()";
