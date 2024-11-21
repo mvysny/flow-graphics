@@ -1,1 +1,1 @@
-include("flow-graphics")
+include("flow-graphics", "demo-app")
