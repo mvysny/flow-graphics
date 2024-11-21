@@ -34,7 +34,7 @@ class DrawingAreaTest {
         UI.getCurrent().add(canvas);
         MockVaadin.clientRoundtrip();
 
-        assertEquals("<svg overflow=\"hidden\" width=\"100\" height=\"100\">\n" +
+        assertEquals("<svg xmlns=\"http://www.w3.org/2000/svg\" overflow=\"hidden\" width=\"100\" height=\"100\">\n" +
                 " <defs></defs><circle fill=\"red\" fill-opacity=\"1.0\" stroke=\"black\" stroke-opacity=\"1.0\" stroke-width=\"1\" r=\"50\" cx=\"100\" cy=\"100\"></circle>\n" +
                 "</svg>", canvas.getElement().getProperty("innerHTML"));
     }
@@ -49,7 +49,7 @@ class DrawingAreaTest {
 
         MockVaadin.clientRoundtrip();
 
-        assertEquals("<svg overflow=\"hidden\" width=\"100\" height=\"100\">\n" +
+        assertEquals("<svg xmlns=\"http://www.w3.org/2000/svg\" overflow=\"hidden\" width=\"100\" height=\"100\">\n" +
                 " <defs></defs><circle fill=\"red\" fill-opacity=\"1.0\" stroke=\"black\" stroke-opacity=\"1.0\" stroke-width=\"1\" r=\"50\" cx=\"100\" cy=\"100\"></circle>\n" +
                 "</svg>", canvas.getElement().getProperty("innerHTML"));
     }

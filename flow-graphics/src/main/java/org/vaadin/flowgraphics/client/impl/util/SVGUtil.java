@@ -35,8 +35,14 @@ public abstract class SVGUtil {
 		return createElementNS(SVG_NS, tag);
 	}
 
-	public static Element createElementNS(String ns, String tag) {
-		return new Element(Tag.valueOf(tag, ns, ParseSettings.htmlDefault), null);
+	private static Element createElementNS(String ns, String tag) {
+		// ignore ns: it's always SVG_NS. We'll add the namespace only to the root <svg> element.
+		// This will allow us to work correctly with older JSoup.
+		final Element element = new Element(tag);
+		if (tag.equals("svg")) {
+			element.attr("xmlns", ns);
+		}
+		return element;
 	}
 
 	public static void setAttributeNS(Element elem, String attr, int value) {

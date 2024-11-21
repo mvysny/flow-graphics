@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     compileOnly(libs.vaadin.core)
-    implementation(libs.jsoup) // we need jsoup 1.16.0+ because of namespace support
     testImplementation(libs.vaadin.core)
 
     testImplementation(libs.junit)
