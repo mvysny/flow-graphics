@@ -18,10 +18,13 @@ package org.vaadin.gwtgraphics.client.impl;
 import java.util.List;
 
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.Line;
 import org.vaadin.gwtgraphics.client.VectorObject;
+import org.vaadin.gwtgraphics.client.gwt.Command;
+import org.vaadin.gwtgraphics.client.gwt.DeferredCommand;
 import org.vaadin.gwtgraphics.client.impl.util.NumberUtil;
 import org.vaadin.gwtgraphics.client.impl.util.SVGBBox;
 import org.vaadin.gwtgraphics.client.impl.util.SVGUtil;
@@ -36,14 +39,6 @@ import org.vaadin.gwtgraphics.client.shape.path.CurveTo;
 import org.vaadin.gwtgraphics.client.shape.path.LineTo;
 import org.vaadin.gwtgraphics.client.shape.path.MoveTo;
 import org.vaadin.gwtgraphics.client.shape.path.PathStep;
-
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
-import com.google.gwt.user.client.ui.RootPanel;
 
 /**
  * This class contains the SVG implementation module of GWT Graphics.
@@ -89,11 +84,11 @@ public class SVGImpl {
 			element = SVGUtil.createSVGElementNS("path");
 		} else if (type == Text.class) {
 			element = SVGUtil.createSVGElementNS("text");
-			element.setAttribute("text-anchor", "start");
+			element.attr("text-anchor", "start");
 		} else if (type == Image.class) {
 			element = SVGUtil.createSVGElementNS("image");
 			// Let aspect ration behave like VML's image does
-			element.setAttribute("preserveAspectRatio", "none");
+			element.attr("preserveAspectRatio", "none");
 		} else if (type == Line.class) {
 			element = SVGUtil.createSVGElementNS("line");
 		} else if (type == Group.class) {
@@ -138,7 +133,7 @@ public class SVGImpl {
 	}
 
 	private String getPosAttribute(Element element, boolean x) {
-		String tagName = element.getTagName();
+		String tagName = element.tagName();
 		String attr = "";
 		if (tagName.equals("rect") || tagName.equals("text")
 				|| tagName.equals("image")) {
@@ -154,7 +149,7 @@ public class SVGImpl {
 	}
 
 	public String getFillColor(Element element) {
-		String fill = element.getAttribute("fill");
+		String fill = element.attr("fill");
 		return fill.equals("none") ? null : fill;
 	}
 
@@ -167,7 +162,7 @@ public class SVGImpl {
 
 	public double getFillOpacity(Element element) {
 		return NumberUtil.parseDoubleValue(
-				element.getAttribute("fill-opacity"), 1);
+				element.attr("fill-opacity"), 1);
 	}
 
 	public void setFillOpacity(Element element, double opacity) {
@@ -175,7 +170,7 @@ public class SVGImpl {
 	}
 
 	public String getStrokeColor(Element element) {
-		String stroke = element.getAttribute("stroke");
+		String stroke = element.attr("stroke");
 		return stroke.equals("none") ? null : stroke;
 	}
 
@@ -193,7 +188,7 @@ public class SVGImpl {
 
 	public double getStrokeOpacity(Element element) {
 		return NumberUtil.parseDoubleValue(
-				element.getAttribute("stroke-opacity"), 1);
+				element.attr("stroke-opacity"), 1);
 	}
 
 	public void setStrokeOpacity(Element element, double opacity) {
@@ -206,8 +201,8 @@ public class SVGImpl {
 
 	public void setWidth(Element element, int width) {
 		SVGUtil.setAttributeNS(element, "width", width);
-		if (element.getTagName().equalsIgnoreCase("svg")) {
-			element.getParentElement().getStyle().setPropertyPx("width", width);
+		if (element.tagName().equalsIgnoreCase("svg")) {
+			element.parent().getStyle().setPropertyPx("width", width);
 		}
 	}
 
@@ -217,8 +212,8 @@ public class SVGImpl {
 
 	public void setHeight(Element element, int height) {
 		SVGUtil.setAttributeNS(element, "height", height);
-		if (element.getTagName().equalsIgnoreCase("svg")) {
-			element.getParentElement().getStyle()
+		if (element.tagName().equalsIgnoreCase("svg")) {
+			element.parent().getStyle()
 					.setPropertyPx("height", height);
 		}
 	}
@@ -354,8 +349,7 @@ public class SVGImpl {
 		if (root.childNodeSize() > 0 && "defs".equals(root.child(0).tagName())) {
 			beforeIndex++;
 		}
-		Element e = root.getChildNodes().getItem(beforeIndex).cast();
-		root.insertBefore(element, e);
+		root.insertChildren(beforeIndex, element);
 	}
 
 	public void remove(Element root, Element element) {
@@ -378,7 +372,8 @@ public class SVGImpl {
 
 	public void setRotation(final Element element, final int degree,
 			final boolean attached) {
-		element.setPropertyInt("_rotation", degree);
+		// @todo mavi revisit
+//		element.setPropertyInt("_rotation", degree);
 		if (degree == 0) {
 			SVGUtil.setAttributeNS(element, "transform", "");
 			return;
@@ -400,7 +395,9 @@ public class SVGImpl {
 	}
 
 	public int getRotation(Element element) {
-		return element.getPropertyInt("_rotation");
+		// @todo mavi revisit
+//		return element.getPropertyInt("_rotation");
+		return 0;
 	}
 
 	public void onAttach(Element element, boolean attached) {
@@ -422,7 +419,7 @@ public class SVGImpl {
 			return 0;
 		}
 
-		DivElement measureElement = Document.get().createDivElement();
+		Element measureElement = new Element("div");
 		Style style = measureElement.getStyle();
 		style.setProperty("visibility", "hidden");
 		style.setProperty("display", "inline");
