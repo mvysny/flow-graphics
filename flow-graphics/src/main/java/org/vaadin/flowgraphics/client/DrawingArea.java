@@ -20,7 +20,9 @@ import java.util.List;
 
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.DetachEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.internal.StateTree;
 import org.jsoup.nodes.Element;
 import org.vaadin.flowgraphics.client.gwt.Widget;
 import org.vaadin.flowgraphics.client.impl.SVGImpl;
@@ -98,7 +100,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 		getImpl().add(root, vo.getElement(), vo.isAttached());
 		vo.setParent(this);
 		childrens.add(vo);
-		flush();
+		flushLazy();
 		return vo;
 	}
 
@@ -121,7 +123,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 		childrens.add(beforeIndex, vo);
 		vo.setParent(this);
 		getImpl().insert(root, vo.getElement(), beforeIndex, vo.isAttached());
-		flush();
+		flushLazy();
 
 		return vo;
 	}
@@ -138,7 +140,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 			return null;
 		}
 		getImpl().bringToFront(root, vo.getElement());
-		flush();
+		flushLazy();
 		return vo;
 	}
 
@@ -156,7 +158,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 		vo.setParent(null);
 		vo.getElement().remove();
 		childrens.remove(vo);
-		flush();
+		flushLazy();
 		return vo;
 	}
 
@@ -291,5 +293,13 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 
 	public void flush() {
 		getElement().setProperty("innerHTML", root.toString());
+		flushRegistration = null;
+	}
+
+	private StateTree.ExecutionRegistration flushRegistration = null;
+	public void flushLazy() {
+		if (flushRegistration == null) {
+			flushRegistration = UI.getCurrent().beforeClientResponse(this, ctx -> flush());
+		}
 	}
 }

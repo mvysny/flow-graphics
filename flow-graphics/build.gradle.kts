@@ -8,6 +8,8 @@ dependencies {
     testImplementation(libs.vaadin.core)
 
     testImplementation(libs.junit)
+    testImplementation(libs.karibu.testing)
+    testImplementation(libs.slf4j.simple)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
