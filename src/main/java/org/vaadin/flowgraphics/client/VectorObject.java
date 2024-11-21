@@ -55,7 +55,7 @@ public abstract class VectorObject extends AbstractWidget {
 	public void setParent(Widget parent) {
 		Widget oldParent = this.parent;
 		if (parent == null) {
-			if (oldParent != null && oldParent.isAttachedGWT()) {
+			if (oldParent != null && oldParent.isAttached()) {
 				onDetach();
 				assert !isAttached() : "Failure of "
 						+ this.getClass().getName()
@@ -68,7 +68,7 @@ public abstract class VectorObject extends AbstractWidget {
 						"Cannot set a new parent without first clearing the old parent");
 			}
 			this.parent = parent;
-			if (parent.isAttachedGWT()) {
+			if (parent.isAttached()) {
 				onAttach();
 				assert isAttached() : "Failure of " + this.getClass().getName()
 						+ " to call super.onAttach()";

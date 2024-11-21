@@ -24,6 +24,7 @@ import org.vaadin.flowgraphics.client.Line;
 import org.vaadin.flowgraphics.client.VectorObject;
 import org.vaadin.flowgraphics.client.gwt.Command;
 import org.vaadin.flowgraphics.client.gwt.DeferredCommand;
+import org.vaadin.flowgraphics.client.gwt.Styles;
 import org.vaadin.flowgraphics.client.impl.util.NumberUtil;
 import org.vaadin.flowgraphics.client.impl.util.SVGBBox;
 import org.vaadin.flowgraphics.client.impl.util.SVGUtil;
@@ -201,7 +202,7 @@ public class SVGImpl {
 	public void setWidth(Element element, int width) {
 		SVGUtil.setAttributeNS(element, "width", width);
 		if (element.tagName().equalsIgnoreCase("svg")) {
-			element.parent().getStyle().setPropertyPx("width", width);
+			new Styles(element.parent()).setPropertyPx("width", width);
 		}
 	}
 
@@ -212,7 +213,7 @@ public class SVGImpl {
 	public void setHeight(Element element, int height) {
 		SVGUtil.setAttributeNS(element, "height", height);
 		if (element.tagName().equalsIgnoreCase("svg")) {
-			element.parent().getStyle()
+			new Styles(element.parent())
 					.setPropertyPx("height", height);
 		}
 	}
@@ -419,13 +420,15 @@ public class SVGImpl {
 		}
 
 		Element measureElement = new Element("div");
-		Style style = measureElement.getStyle();
-		style.setProperty("visibility", "hidden");
-		style.setProperty("display", "inline");
-		style.setProperty("whiteSpace", "nowrap");
-		style.setProperty("fontFamily", getTextFontFamily(element));
-		style.setPropertyPx("fontSize", getTextFontSize(element));
-		measureElement.setInnerText(text);
+		Styles styles = new Styles(measureElement);
+		styles.setProperty("visibility", "hidden");
+		styles.setProperty("display", "inline");
+		styles.setProperty("whiteSpace", "nowrap");
+		styles.setProperty("fontFamily", getTextFontFamily(element));
+		styles.setPropertyPx("fontSize", getTextFontSize(element));
+		measureElement.text(text);
+		// @todo mavi can't measure text size
+/*
 		RootPanel.getBodyElement().appendChild(measureElement);
 		int measurement;
 		if (measureWidth) {
@@ -436,5 +439,7 @@ public class SVGImpl {
 		RootPanel.getBodyElement().removeChild(measureElement);
 
 		return measurement;
+*/
+		return 0;
 	}
 }
