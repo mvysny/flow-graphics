@@ -5,7 +5,11 @@ plugins {
 
 dependencies {
     implementation(project(":flow-graphics"))
-    implementation(libs.vaadin.core)
+    implementation(libs.vaadin.core) {
+        if (vaadin.productionMode) {
+            exclude(module = "vaadin-dev")
+        }
+    }
     implementation(libs.slf4j.simple)
     implementation(libs.vaadin.boot)
 
