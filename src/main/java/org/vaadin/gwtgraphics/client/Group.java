@@ -88,7 +88,7 @@ public class Group extends VectorObject implements VectorObjectContainer {
 			return null;
 		}
 		vo.setParent(null);
-		getElement().removeChild(vo.getElement());
+		vo.getElement().remove();
 		childrens.remove(vo);
 		return vo;
 	}

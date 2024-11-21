@@ -15,7 +15,9 @@
  */
 package org.vaadin.gwtgraphics.client.impl.util;
 
-import com.google.gwt.dom.client.Element;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.ParseSettings;
+import org.jsoup.parser.Tag;
 
 /**
  * This class contains helpers used by the SVGImpl class.
@@ -33,9 +35,9 @@ public abstract class SVGUtil {
 		return createElementNS(SVG_NS, tag);
 	}
 
-	public static native Element createElementNS(String ns, String tag) /*-{
-		return $doc.createElementNS(ns, tag);
-	}-*/;
+	public static Element createElementNS(String ns, String tag) {
+		return new Element(Tag.valueOf(tag, ns, ParseSettings.htmlDefault), null);
+	}
 
 	public static void setAttributeNS(Element elem, String attr, int value) {
 		setAttributeNS(null, elem, attr, "" + value);
@@ -45,15 +47,15 @@ public abstract class SVGUtil {
 		setAttributeNS(null, elem, attr, value);
 	}
 
-	public static native void setAttributeNS(String uri, Element elem,
-			String attr, String value) /*-{
-		elem.setAttributeNS(uri, attr, value);
-	}-*/;
+	public static void setAttributeNS(String uri, Element elem,
+			String attr, String value) {
+		// @todo mavi jsoup doesn't support attribute namespaces?
+		elem.attributes().put(attr, value);
+	}
 
-	public static native void setClassName(Element element, String name) /*-{
-		// See http://newsgroups.cryer.info/mozilla/dev.tech.svg/200803/080318666.html
-		element.className.baseVal = name;
-	}-*/;
+	public static void setClassName(Element element, String name) {
+		element.attr("class", name);
+	}
 
 	public static native SVGBBox getBBBox(Element element, boolean attached)
 	/*-{

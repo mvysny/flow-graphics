@@ -15,42 +15,19 @@
  */
 package org.vaadin.gwtgraphics.client;
 
+import org.vaadin.gwtgraphics.client.gwt.Widget;
 import org.vaadin.gwtgraphics.client.impl.SVGImpl;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.HasAllMouseHandlers;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
-import com.google.gwt.event.dom.client.MouseWheelHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * An abstract base class for drawing objects the DrawingArea can contain.
  * 
  * @author Henri Kerola
  */
-public abstract class VectorObject extends Widget implements HasClickHandlers,
-		HasAllMouseHandlers, HasDoubleClickHandlers {
+public abstract class VectorObject extends Widget {
 
 	private Widget parent;
 
-	private static final SVGImpl impl = GWT.create(SVGImpl.class);
+	private static final SVGImpl impl = new SVGImpl();
 
 	public VectorObject() {
 		setElement(impl.createElement(getType()));
@@ -113,94 +90,6 @@ public abstract class VectorObject extends Widget implements HasClickHandlers,
 	public void setWidth(String width) {
 		throw new UnsupportedOperationException(
 				"VectorObject doesn't support setWidth");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasClickHandlers#addClickHandler(com.
-	 * google.gwt.event.dom.client.ClickHandler)
-	 */
-	public HandlerRegistration addClickHandler(ClickHandler handler) {
-		return addDomHandler(handler, ClickEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasDoubleClickHandlers#addDoubleClickHandler
-	 * (com.google.gwt.event.dom.client.DoubleClickHandler)
-	 */
-	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
-		return addDomHandler(handler, DoubleClickEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseDownHandlers#addMouseDownHandler
-	 * (com.google.gwt.event.dom.client.MouseDownHandler)
-	 */
-	public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
-		return addDomHandler(handler, MouseDownEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseUpHandlers#addMouseUpHandler(
-	 * com.google.gwt.event.dom.client.MouseUpHandler)
-	 */
-	public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-		return addDomHandler(handler, MouseUpEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseOutHandlers#addMouseOutHandler
-	 * (com.google.gwt.event.dom.client.MouseOutHandler)
-	 */
-	public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-		return addDomHandler(handler, MouseOutEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseOverHandlers#addMouseOverHandler
-	 * (com.google.gwt.event.dom.client.MouseOverHandler)
-	 */
-	public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-		return addDomHandler(handler, MouseOverEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseMoveHandlers#addMouseMoveHandler
-	 * (com.google.gwt.event.dom.client.MouseMoveHandler)
-	 */
-	public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-		return addDomHandler(handler, MouseMoveEvent.getType());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.google.gwt.event.dom.client.HasMouseWheelHandlers#addMouseWheelHandler
-	 * (com.google.gwt.event.dom.client.MouseWheelHandler)
-	 */
-	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-		return addDomHandler(handler, MouseWheelEvent.getType());
 	}
 
 	/*

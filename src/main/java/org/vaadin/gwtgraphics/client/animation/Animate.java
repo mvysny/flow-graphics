@@ -15,7 +15,7 @@
  */
 package org.vaadin.gwtgraphics.client.animation;
 
-import com.google.gwt.animation.client.Animation;
+import org.vaadin.gwtgraphics.client.gwt.Animation;
 
 /**
  * This class can be used to animate classes implementing the Animatable

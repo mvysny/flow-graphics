@@ -15,7 +15,7 @@
  */
 package org.vaadin.gwtgraphics.client.impl.util;
 
-import com.google.gwt.dom.client.Element;
+import org.jsoup.nodes.Element;
 
 /**
  * This util class contains some static helpers for number parsing.
@@ -26,7 +26,7 @@ import com.google.gwt.dom.client.Element;
 public abstract class NumberUtil {
 
 	public static int parseIntValue(Element element, String attr, int defaultVal) {
-		return parseIntValue(element.getAttribute(attr), defaultVal);
+		return parseIntValue(element.attr(attr), defaultVal);
 	}
 
 	public static int parseIntValue(String value, int defaultVal) {

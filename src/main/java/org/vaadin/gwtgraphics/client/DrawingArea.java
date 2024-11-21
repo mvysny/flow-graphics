@@ -18,33 +18,10 @@ package org.vaadin.gwtgraphics.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vaadin.flow.component.ClickNotifier;
+import com.vaadin.flow.component.html.Div;
+import org.jsoup.nodes.Element;
 import org.vaadin.gwtgraphics.client.impl.SVGImpl;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.HasAllMouseHandlers;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
-import com.google.gwt.event.dom.client.MouseWheelHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * The following example shows how a DrawingArea instance is created and added
@@ -73,10 +50,9 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Henri Kerola
  * 
  */
-public class DrawingArea extends Widget implements VectorObjectContainer,
-		HasClickHandlers, HasAllMouseHandlers, HasDoubleClickHandlers {
+public class DrawingArea extends Div implements VectorObjectContainer, ClickNotifier<DrawingArea> {
 
-	private static final SVGImpl impl = GWT.create(SVGImpl.class);
+	private static final SVGImpl impl = new SVGImpl();
 
 	private final Element root;
 
@@ -91,7 +67,7 @@ public class DrawingArea extends Widget implements VectorObjectContainer,
 	 *            the height of DrawingArea in pixels
 	 */
 	public DrawingArea(int width, int height) {
-		DivElement container = Document.get().createDivElement();
+		Element container = new Element("div");
 		setElement(container);
 
 		root = getImpl().createDrawingArea(container, width, height);

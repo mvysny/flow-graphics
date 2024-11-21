@@ -17,6 +17,7 @@ package org.vaadin.gwtgraphics.client.impl;
 
 import java.util.List;
 
+import org.jsoup.nodes.Element;
 import org.vaadin.gwtgraphics.client.Group;
 import org.vaadin.gwtgraphics.client.Image;
 import org.vaadin.gwtgraphics.client.Line;
@@ -283,15 +284,15 @@ public class SVGImpl {
 	}
 
 	public String getText(Element element) {
-		return element.getInnerText();
+		return element.ownText();
 	}
 
 	public void setText(Element element, String text, boolean attached) {
-		element.setInnerText(text);
+		element.text(text);
 	}
 
 	public String getTextFontFamily(Element element) {
-		return element.getAttribute("font-family");
+		return element.attr("font-family");
 	}
 
 	public void setTextFontFamily(Element element, String family,
@@ -308,7 +309,7 @@ public class SVGImpl {
 	}
 
 	public String getImageHref(Element element) {
-		return element.getAttribute("href");
+		return element.attr("href");
 	}
 
 	public void setImageHref(Element element, String src) {
@@ -348,7 +349,7 @@ public class SVGImpl {
 
 	public void insert(Element root, Element element, int beforeIndex,
 			boolean attached) {
-		if ("defs".equals(root.getChildNodes().getItem(0).getNodeName())) {
+		if (root.childNodeSize() > 0 && "defs".equals(root.child(0).tagName())) {
 			beforeIndex++;
 		}
 		Element e = root.getChildNodes().getItem(beforeIndex).cast();
@@ -356,7 +357,7 @@ public class SVGImpl {
 	}
 
 	public void remove(Element root, Element element) {
-		root.removeChild(element);
+		element.remove();
 	}
 
 	public void bringToFront(Element root, Element element) {
@@ -364,8 +365,8 @@ public class SVGImpl {
 	}
 
 	public void clear(Element root) {
-		while (root.hasChildNodes()) {
-			root.removeChild(root.getLastChild());
+		while (root.childNodeSize() > 0) {
+			root.childNode(0).remove();
 		}
 	}
 
