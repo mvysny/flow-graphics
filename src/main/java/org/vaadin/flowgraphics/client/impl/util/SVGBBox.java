@@ -15,31 +15,29 @@
  */
 package org.vaadin.flowgraphics.client.impl.util;
 
-import com.google.gwt.core.client.JavaScriptObject;
+import java.io.Serializable;
 
 /**
  * @author Henri Kerola
  *
  */
-public final class SVGBBox extends JavaScriptObject {
+public final class SVGBBox implements Serializable {
 
-	protected SVGBBox() {
+	public int x, y, width, height;
 
+	public int getX() {
+		return this.x;
 	}
 
-	public native int getX() /*-{
-		return this.x;
-	}-*/;
-
-	public native int getY() /*-{
+	public int getY() {
 		return this.y;
-	}-*/;
+	}
 
-	public native int getWidth() /*-{
+	public int getWidth() {
 		return this.width;
-	}-*/;
+	}
 
-	public native int getHeight() /*-{
+	public int getHeight() {
 		return this.height;
-	}-*/;
+	}
 }

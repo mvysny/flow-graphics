@@ -57,7 +57,10 @@ public abstract class SVGUtil {
 		element.attr("class", name);
 	}
 
-	public static native SVGBBox getBBBox(Element element, boolean attached)
+	public static SVGBBox getBBBox(Element element, boolean attached) {
+		// @todo mavi no way to retrieve bounding box on server-side.
+		return new SVGBBox();
+	}
 	/*-{
 		var bbox = null;
 		if (attached) {
