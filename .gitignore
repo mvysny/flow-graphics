@@ -5,3 +5,5 @@ build
 .gradle
 classes
 .attach_pid*
+demo-app/frontend/generated
+demo-app/vite.generated.ts

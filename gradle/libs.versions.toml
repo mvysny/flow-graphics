@@ -7,6 +7,7 @@ jsoup = "org.jsoup:jsoup:1.16.2"
 # https://repo1.maven.org/maven2/org/junit/jupiter/junit-jupiter-engine/
 junit = "org.junit.jupiter:junit-jupiter-engine:5.11.0"
 slf4j-simple = "org.slf4j:slf4j-simple:2.0.13"
+vaadin-boot = "com.github.mvysny.vaadin-boot:vaadin-boot:10.7"
 
 [plugins]
 vaadin = { id = "com.vaadin", version.ref = "vaadin" }
