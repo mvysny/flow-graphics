@@ -18,7 +18,6 @@ class DrawingAreaTest {
         circle.setFillColor("red");
         canvas.add(circle);
 
-        canvas.flush();
         assertEquals("<svg overflow=\"hidden\" width=\"100\" height=\"100\">\n" +
                 " <defs></defs><circle fill=\"red\" fill-opacity=\"1.0\" stroke=\"black\" stroke-opacity=\"1.0\" stroke-width=\"1\" r=\"50\" cx=\"100\" cy=\"100\"></circle>\n" +
                 "</svg>", canvas.getElement().getProperty("innerHTML"));
