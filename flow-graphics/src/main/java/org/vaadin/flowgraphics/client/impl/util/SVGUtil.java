@@ -32,15 +32,13 @@ public abstract class SVGUtil {
 	public static final String XLINK_NS = "http://www.w3.org/1999/xlink";
 
 	public static Element createSVGElementNS(String tag) {
-		return createElementNS(SVG_NS, tag);
+		return createElementSVG_NS(tag);
 	}
 
-	private static Element createElementNS(String ns, String tag) {
-		// ignore ns: it's always SVG_NS. We'll add the namespace only to the root <svg> element.
-		// This will allow us to work correctly with older JSoup.
+	private static Element createElementSVG_NS(String tag) {
 		final Element element = new Element(tag);
 		if (tag.equals("svg")) {
-			element.attr("xmlns", ns);
+			element.attr("xmlns", SVG_NS);
 		}
 		return element;
 	}
