@@ -53,7 +53,6 @@ public abstract class SVGUtil {
 
 	public static void setAttributeNS(String uri, Element elem,
 			String attr, String value) {
-		// @todo mavi jsoup doesn't support attribute namespaces?
 		if (uri == null || uri.trim().isEmpty()) {
 			elem.attributes().put(attr, value);
 		} else {
