@@ -56,7 +56,15 @@ public abstract class SVGUtil {
 	public static void setAttributeNS(String uri, Element elem,
 			String attr, String value) {
 		// @todo mavi jsoup doesn't support attribute namespaces?
-		elem.attributes().put(attr, value);
+		if (uri == null || uri.trim().isEmpty()) {
+			elem.attributes().put(attr, value);
+		} else {
+			if (!uri.equals(XLINK_NS)) {
+				throw new IllegalArgumentException("Parameter uri: invalid value " + uri + ": must be " + XLINK_NS);
+			}
+			elem.attr("xmlns:xlink", XLINK_NS);
+			elem.attr("xlink:" + attr, value);
+		}
 	}
 
 	public static void setClassName(Element element, String name) {
