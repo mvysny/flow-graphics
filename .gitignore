@@ -8,3 +8,7 @@ classes
 demo-app/frontend/generated
 demo-app/vite.generated.ts
 demo-app/node_modules
+.settings
+bin
+.classpath
+.project
