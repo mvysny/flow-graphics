@@ -1,5 +1,18 @@
 plugins {
     `java-library`
+    jacoco
+}
+
+jacoco {
+    toolVersion = "0.8.15"
+}
+
+tasks.test { finalizedBy(tasks.jacocoTestReport) }
+tasks.jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }
 
 dependencies {
