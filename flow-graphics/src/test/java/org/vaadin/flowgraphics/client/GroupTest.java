@@ -139,4 +139,22 @@ class GroupTest {
         group.remove(circle);
         assertFalse(circle.isAttached());
     }
+
+    @Test
+    public void attachingGroupAttachesItsChildren() {
+        final DrawingArea canvas = new DrawingArea(100, 100);
+        final Group group = new Group();
+        final Circle circle = new Circle(0, 0, 1);
+        group.add(circle);
+        canvas.add(group);
+        assertFalse(circle.isAttached());
+
+        UI.getCurrent().add(canvas);
+        assertTrue(group.isAttached());
+        assertTrue(circle.isAttached());
+
+        UI.getCurrent().remove(canvas);
+        assertFalse(group.isAttached());
+        assertFalse(circle.isAttached());
+    }
 }

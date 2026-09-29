@@ -310,7 +310,7 @@ public class SVGImpl {
 	}
 
 	public String getImageHref(Element element) {
-		return element.attr("href");
+		return element.attr("xlink:href");
 	}
 
 	public void setImageHref(Element element, String src) {

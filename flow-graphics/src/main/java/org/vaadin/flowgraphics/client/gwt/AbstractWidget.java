@@ -17,8 +17,10 @@ public abstract class AbstractWidget implements Widget {
 
     protected void onAttach() {
         isAttached = true;
+        doAttachChildren();
     }
     protected void onDetach() {
+        doDetachChildren();
         isAttached = false;
     }
     public boolean isAttachedGWT() {

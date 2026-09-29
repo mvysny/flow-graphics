@@ -279,8 +279,9 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 	@Override
 	public void setStyleName(String style) {
 		getElement().getClassList().clear();
+		getElement().getClassList().add(style);
 		getElement().getClassList().add(
-				style + " " + style + "-" + getImpl().getStyleSuffix());
+				style + "-" + getImpl().getStyleSuffix());
 	}
 
 	@Override
