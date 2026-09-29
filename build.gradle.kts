@@ -100,6 +100,13 @@ subprojects {
     }
 }
 
+val verifyDesignTripwires by tasks.registering(Exec::class) {
+    description = "Checks the doc layer: AGENTS.md and design/."
+    group = "verification"
+    commandLine("bash", "design/verify_design_tripwires.sh")
+}
+tasks.check { dependsOn(verifyDesignTripwires) }
+
 if (JavaVersion.current() > JavaVersion.VERSION_11 && gradle.startParameter.taskNames.contains("publish")) {
     throw GradleException("Release this library with JDK 11 or lower, to ensure JDK11 compatibility; current JDK is ${JavaVersion.current()}")
 }
