@@ -22,9 +22,12 @@ It also affects:
 
 The existing tests don't catch it: `DrawingAreaTest` sets every attribute *before* `canvas.add`.
 
-In GWT Graphics each setter wrote straight to the live browser DOM, so a ported app that changes
-colours or positions after drawing (hover highlights, a moving marker) breaks silently. That
-goes against the **Drop-in for GWT Graphics** promise.
+GWT Graphics had no flush at all. Each setter wrote straight to the live browser DOM
+(`SVGUtil.setAttributeNS` is JSNI on a `com.google.gwt.dom.client.Element`; checked against
+`henrikerola/gwt-graphics` @ `4d06582`, where the word "flush" appears nowhere). The partial
+flush came in with this port, in `39b6155` "DrawingArea: auto-flush". So a ported app that
+changes colours or positions after drawing (hover highlights, a moving marker) breaks silently.
+That goes against the **Drop-in for GWT Graphics** promise.
 
 ## Proposal
 
