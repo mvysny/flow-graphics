@@ -67,6 +67,7 @@ public class Text extends Shape {
 	 */
 	public void setText(String text) {
 		getImpl().setText(getElement(), text, isAttached());
+		changed();
 	}
 
 	/**
@@ -86,6 +87,7 @@ public class Text extends Shape {
 	 */
 	public void setFontFamily(String family) {
 		getImpl().setTextFontFamily(getElement(), family, isAttached());
+		changed();
 	}
 
 	/**
@@ -105,6 +107,7 @@ public class Text extends Shape {
 	 */
 	public void setFontSize(int size) {
 		getImpl().setTextFontSize(getElement(), size, isAttached());
+		changed();
 	}
 
 	/**

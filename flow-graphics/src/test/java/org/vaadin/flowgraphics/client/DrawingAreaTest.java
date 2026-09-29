@@ -211,6 +211,85 @@ class DrawingAreaTest {
     }
 
     @Test
+    public void setterAfterAddReachesBrowser() {
+        final DrawingArea canvas = new DrawingArea(100, 100);
+        UI.getCurrent().add(canvas);
+        final Circle circle = new Circle(0, 0, 1);
+        canvas.add(circle);
+        MockVaadin.clientRoundtrip();
+
+        circle.setFillColor("red");
+        MockVaadin.clientRoundtrip();
+        assertTrue(canvas.getElement().getProperty("innerHTML").contains("fill=\"red\""));
+    }
+
+    @Test
+    public void groupOnCanvasReachesBrowser() {
+        final DrawingArea canvas = new DrawingArea(100, 100);
+        UI.getCurrent().add(canvas);
+        final Group group = new Group();
+        canvas.add(group);
+        MockVaadin.clientRoundtrip();
+
+        final Circle circle = new Circle(0, 0, 1);
+        group.add(circle);
+        MockVaadin.clientRoundtrip();
+        assertTrue(canvas.getElement().getProperty("innerHTML").contains("<circle"));
+
+        circle.setFillColor("red");
+        MockVaadin.clientRoundtrip();
+        assertTrue(canvas.getElement().getProperty("innerHTML").contains("fill=\"red\""));
+
+        group.remove(circle);
+        MockVaadin.clientRoundtrip();
+        assertFalse(canvas.getElement().getProperty("innerHTML").contains("<circle"));
+    }
+
+    @Test
+    public void resizeAfterFlushReachesBrowser() {
+        final DrawingArea canvas = new DrawingArea(100, 100);
+        UI.getCurrent().add(canvas);
+        canvas.add(new Circle(0, 0, 1));
+        MockVaadin.clientRoundtrip();
+
+        canvas.setWidth(200);
+        MockVaadin.clientRoundtrip();
+        assertTrue(canvas.getElement().getProperty("innerHTML").contains("width=\"200\""));
+    }
+
+    private static Throwable runOffUiThread(Runnable r) throws InterruptedException {
+        final Throwable[] thrown = new Throwable[1];
+        final Thread t = new Thread(() -> {
+            try {
+                r.run();
+            } catch (Throwable e) {
+                thrown[0] = e;
+            }
+        });
+        t.start();
+        t.join();
+        return thrown[0];
+    }
+
+    @Test
+    public void setterOffUiThreadFails() throws InterruptedException {
+        final DrawingArea canvas = new DrawingArea(100, 100);
+        UI.getCurrent().add(canvas);
+        final Circle circle = new Circle(0, 0, 1);
+        canvas.add(circle);
+        MockVaadin.clientRoundtrip();
+
+        final Throwable thrown = runOffUiThread(() -> circle.setFillColor("red"));
+        assertInstanceOf(IllegalStateException.class, thrown);
+        assertTrue(thrown.getMessage().contains("ui.access"), thrown.getMessage());
+    }
+
+    @Test
+    public void constructingOffUiThreadWorks() throws InterruptedException {
+        assertNull(runOffUiThread(() -> new DrawingArea(100, 100)));
+    }
+
+    @Test
     public void flushLazyCoalescesMutations() {
         final DrawingArea canvas = new DrawingArea(100, 100);
         UI.getCurrent().add(canvas);

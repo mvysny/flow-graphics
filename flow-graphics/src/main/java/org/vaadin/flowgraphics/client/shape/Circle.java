@@ -65,6 +65,7 @@ public class Circle extends Shape {
 	 */
 	public void setRadius(int radius) {
 		getImpl().setCircleRadius(getElement(), radius);
+		changed();
 	}
 
 	/*

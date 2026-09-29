@@ -5,6 +5,10 @@ import org.jsoup.nodes.Element;
 public abstract class AbstractWidget implements Widget {
     private Element element;
 
+    /**
+     * The jsoup element, not a live browser node: an edit made here directly reaches the
+     * browser only after {@code DrawingArea.flushLazy()}.
+     */
     public Element getElement() {
         return element;
     }

@@ -27,3 +27,15 @@ Why not one Flow `Element` per shape: it rewrites every line of `SVGImpl` and sp
 node per circle for pictures that are usually redrawn whole. The cost we carry: every flush
 resends the entire SVG; nothing measured in the browser — `getBBox`, text size — is known on
 the server; per-shape click handlers and GWT `Animation` are gone, the latter a no-op shim.
+
+## D_flush_per_mutation — Why does every mutator schedule a flush, rather than the canvas resending on every response or the caller flushing?
+
+GWT Graphics had no flush. Each setter wrote to the live browser DOM, so a colour changed after
+drawing showed up at once, and **Emulate GWT Graphics** means a ported hover highlight has to
+keep working. So every mutator ends in `changed()` (or `flushLazy()` on the canvas). One
+registration per response keeps a loop of 1000 setters at one serialisation. Why not re-flush on
+every response while attached: Flow never dedupes `innerHTML` (see `flush()`), so every round
+trip, including ones unrelated to the canvas, would carry the whole SVG. Why not make the caller
+flush: every ported component would need an audit for mutations, which breaks drop-in. The cost
+we carry: a raw jsoup edit through `getSvgElement()` or `getElement()` still needs a manual
+`flushLazy()`. jsoup has no mutation events, so that gap is marked `@todo mavi`, not closed.

@@ -70,6 +70,7 @@ public class Image extends VectorObject implements Positionable, Animatable {
 	 */
 	public void setX(int x) {
 		getImpl().setX(getElement(), x, isAttached());
+		changed();
 	}
 
 	/*
@@ -88,6 +89,7 @@ public class Image extends VectorObject implements Positionable, Animatable {
 	 */
 	public void setY(int y) {
 		getImpl().setY(getElement(), y, isAttached());
+		changed();
 	}
 
 	/**
@@ -107,6 +109,7 @@ public class Image extends VectorObject implements Positionable, Animatable {
 	 */
 	public void setHref(String href) {
 		getImpl().setImageHref(getElement(), href);
+		changed();
 	}
 
 	/**
@@ -126,6 +129,7 @@ public class Image extends VectorObject implements Positionable, Animatable {
 	 */
 	public void setWidth(int width) {
 		getImpl().setWidth(getElement(), width);
+		changed();
 	}
 
 	@Override
@@ -162,6 +166,7 @@ public class Image extends VectorObject implements Positionable, Animatable {
 	 */
 	public void setHeight(int height) {
 		getImpl().setHeight(getElement(), height);
+		changed();
 	}
 
 	/*

@@ -69,6 +69,7 @@ public class Rectangle extends Shape {
 	 */
 	public void setWidth(int width) {
 		getImpl().setWidth(getElement(), width);
+		changed();
 	}
 
 	/*
@@ -111,6 +112,7 @@ public class Rectangle extends Shape {
 	 */
 	public void setHeight(int height) {
 		getImpl().setHeight(getElement(), height);
+		changed();
 	}
 
 	/*
@@ -157,6 +159,7 @@ public class Rectangle extends Shape {
 			radius = 0;
 		}
 		getImpl().setRectangleRoundedCorners(getElement(), radius);
+		changed();
 	}
 
 	public void setPropertyDouble(String property, double value) {

@@ -80,6 +80,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 	 * If you modify this element directly, don't forget to call {@link #flushLazy()}!
 	 * @return the root SVG element.
 	 */
+	// @todo mavi GWT edits hit the live DOM; jsoup has no mutation events, so a raw edit can't flush itself
 	public Element getSvgElement() {
 		return root;
 	}
@@ -238,6 +239,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 				getImpl().setHeight(root, Integer.parseInt(height.substring(0,
 						height.length() - 2)));
 				successful = true;
+				resized();
 			} catch (NumberFormatException e) {
 			}
 		}
@@ -261,6 +263,7 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 				getImpl().setWidth(root, Integer
 						.parseInt(width.substring(0, width.length() - 2)));
 				successful = true;
+				resized();
 			} catch (NumberFormatException e) {
 			}
 		}
@@ -300,18 +303,51 @@ public class DrawingArea extends Div implements Widget, VectorObjectContainer {
 		super.onDetach(detachEvent);
 	}
 
+	/**
+	 * Serialises the SVG into the {@code Div}'s {@code innerHTML}; prefer {@link #flushLazy()}.
+	 * Flow never dedupes {@code innerHTML} ({@code ElementPropertyMap.ALWAYS_GENERATE_CHANGE_PROPERTIES}),
+	 * so each call resends the whole SVG, even unchanged.
+	 */
 	public void flush() {
 		getElement().setProperty("innerHTML", root.toString());
+		flushed = true;
 		if (flushRegistration != null) {
 			flushRegistration.remove();
 			flushRegistration = null;
 		}
 	}
 
+	/**
+	 * Until the first flush a resize needs none of its own, so the constructor's resize doesn't
+	 * demand a UI.
+	 */
+	private boolean flushed = false;
+
+	private void resized() {
+		if (flushed) {
+			flushLazy();
+		}
+	}
+
 	private StateTree.ExecutionRegistration flushRegistration = null;
+
+	/**
+	 * Schedules {@link #flush()} before the next response; any number of calls within one
+	 * response cost one flush.
+	 *
+	 * @throws IllegalStateException
+	 *             if called without the UI lock, e.g. from a background thread. Only the first
+	 *             call of a response checks, so a race with an already-scheduled flush goes
+	 *             unnoticed.
+	 */
 	public void flushLazy() {
 		if (flushRegistration == null) {
-			flushRegistration = UI.getCurrent().beforeClientResponse(this, ctx -> flush());
+			final UI ui = UI.getCurrent();
+			if (ui == null) {
+				throw new IllegalStateException("DrawingArea mutated without the UI lock: "
+						+ "wrap the change in ui.access(() -> ...)");
+			}
+			flushRegistration = ui.beforeClientResponse(this, ctx -> flush());
 		}
 	}
 }

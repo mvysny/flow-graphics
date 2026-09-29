@@ -29,8 +29,8 @@ Every fact lives in exactly one of these; the others link to it.
 
 ## Invariants
 
-- **The browser sees the SVG only when `DrawingArea.flush()` serialises it.** A jsoup mutation with no `flushLazy()` after it never reaches the client; the flow is in architecture.md. See `D_jsoup_svg_tree`.
-- **A `DrawingArea` is mutated with the UI lock held.** `flushLazy()` reads `UI.getCurrent()` and NPEs from a background thread; use `ui.access()`.
+- **The browser sees the SVG only when `DrawingArea.flush()` serialises it.** Every mutator ends in `changed()` / `flushLazy()`, which schedules it; a raw jsoup edit needs its own `flushLazy()`. The flow is in architecture.md. See `D_jsoup_svg_tree`, `D_flush_per_mutation`.
+- **A drawn object is mutated with the UI lock held.** `flushLazy()` throws `IllegalStateException` from a background thread; use `ui.access()`.
 - **Nothing reads browser-side geometry.** `SVGUtil.getBBBox` returns zeros on the server; code needing bbox or text metrics does not work, and is marked `@todo mavi`.
 
 ## Module map

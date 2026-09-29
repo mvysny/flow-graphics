@@ -46,10 +46,31 @@ public abstract class VectorObject extends AbstractWidget {
 
 	public void setRotation(int degree) {
 		getImpl().setRotation(getElement(), degree, isAttached());
+		changed();
 	}
 
 	public Widget getParent() {
 		return parent;
+	}
+
+	/**
+	 * Schedules a flush of the {@link DrawingArea} this object is drawn on, so a change reaches
+	 * the browser; every mutator ends with it. Does nothing while the object isn't on a canvas:
+	 * {@code add} flushes when it gets there.
+	 *
+	 * <h2>Implementation detail</h2>
+	 * Walks {@link #getParent()} through any {@link Group}s on every call rather than caching the
+	 * owning canvas: a cache would need updating for the whole subtree on every re-parent, and a
+	 * stale one silently drops the change.
+	 */
+	protected void changed() {
+		Widget p = getParent();
+		while (p instanceof VectorObject) {
+			p = ((VectorObject) p).getParent();
+		}
+		if (p instanceof DrawingArea) {
+			((DrawingArea) p).flushLazy();
+		}
 	}
 
 	public void setParent(Widget parent) {
@@ -79,6 +100,7 @@ public abstract class VectorObject extends AbstractWidget {
 	@Override
 	public void setStyleName(String style) {
 		getImpl().setStyleName(getElement(), style);
+		changed();
 	}
 
 	@Override

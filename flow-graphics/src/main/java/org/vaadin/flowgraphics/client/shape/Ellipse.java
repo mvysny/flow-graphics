@@ -69,6 +69,7 @@ public class Ellipse extends Shape {
 	 */
 	public void setRadiusX(int radiusX) {
 		getImpl().setEllipseRadiusX(getElement(), radiusX);
+		changed();
 	}
 
 	/**
@@ -88,6 +89,7 @@ public class Ellipse extends Shape {
 	 */
 	public void setRadiusY(int radiusY) {
 		getImpl().setEllipseRadiusY(getElement(), radiusY);
+		changed();
 	}
 
 	/*

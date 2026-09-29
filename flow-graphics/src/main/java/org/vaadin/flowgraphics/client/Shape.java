@@ -63,6 +63,7 @@ public abstract class Shape extends VectorObject implements Strokeable,
 	 */
 	public void setX(int x) {
 		getImpl().setX(getElement(), x, isAttached());
+		changed();
 	}
 
 	/*
@@ -76,6 +77,7 @@ public abstract class Shape extends VectorObject implements Strokeable,
 
 	public void setY(int y) {
 		getImpl().setY(getElement(), y, isAttached());
+		changed();
 	}
 
 	/**
@@ -105,6 +107,7 @@ public abstract class Shape extends VectorObject implements Strokeable,
 	 */
 	public void setFillColor(String color) {
 		getImpl().setFillColor(getElement(), color);
+		changed();
 	}
 
 	/**
@@ -126,6 +129,7 @@ public abstract class Shape extends VectorObject implements Strokeable,
 	 */
 	public void setFillOpacity(double opacity) {
 		getImpl().setFillOpacity(getElement(), opacity);
+		changed();
 	}
 
 	/*
@@ -145,6 +149,7 @@ public abstract class Shape extends VectorObject implements Strokeable,
 	 */
 	public void setStrokeColor(String color) {
 		getImpl().setStrokeColor(getElement(), color);
+		changed();
 	}
 
 	/*
@@ -163,6 +168,7 @@ public abstract class Shape extends VectorObject implements Strokeable,
 	 */
 	public void setStrokeWidth(int width) {
 		getImpl().setStrokeWidth(getElement(), width, isAttached());
+		changed();
 	}
 
 	/*
@@ -181,6 +187,7 @@ public abstract class Shape extends VectorObject implements Strokeable,
 	 */
 	public void setStrokeOpacity(double opacity) {
 		getImpl().setStrokeOpacity(getElement(), opacity);
+		changed();
 	}
 
 	/*

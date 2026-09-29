@@ -71,6 +71,7 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 	 */
 	public void setX1(int x1) {
 		getImpl().setX(getElement(), x1, isAttached());
+		changed();
 	}
 
 	/**
@@ -90,6 +91,7 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 	 */
 	public void setY1(int y1) {
 		getImpl().setY(getElement(), y1, isAttached());
+		changed();
 	}
 
 	/**
@@ -109,6 +111,7 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 	 */
 	public void setX2(int x2) {
 		getImpl().setLineX2(getElement(), x2);
+		changed();
 	}
 
 	/**
@@ -128,6 +131,7 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 	 */
 	public void setY2(int y2) {
 		getImpl().setLineY2(getElement(), y2);
+		changed();
 	}
 
 	/*
@@ -147,6 +151,7 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 	 */
 	public void setStrokeColor(String color) {
 		getImpl().setStrokeColor(getElement(), color);
+		changed();
 	}
 
 	/*
@@ -165,6 +170,7 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 	 */
 	public void setStrokeWidth(int width) {
 		getImpl().setStrokeWidth(getElement(), width, isAttached());
+		changed();
 	}
 
 	/*
@@ -183,6 +189,7 @@ public class Line extends VectorObject implements Strokeable, Animatable {
 	 */
 	public void setStrokeOpacity(double opacity) {
 		getImpl().setStrokeOpacity(getElement(), opacity);
+		changed();
 	}
 
 	/*

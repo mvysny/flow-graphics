@@ -13,6 +13,7 @@ ruler. Cap 12 KB — over it, research or doc-comment content has crept in.
 
 - `DrawingArea` is the only Flow component: a `Div` holding one jsoup `<svg>` root. Shapes, `Line`, `Image`, `Text` and `Group` are plain Java objects over a jsoup `Element`, never Flow components (`D_jsoup_svg_tree`).
 - Every attribute write goes through `SVGImpl` (one static instance per class) and `SVGUtil`; shapes never touch their `Element` directly.
+- Every mutator (each setter, `Path`'s steps, `Group`'s container methods, `DrawingArea`'s size) ends by scheduling the owning canvas's flush: `VectorObject.changed()` for a drawn object, `flushLazy()` for the canvas itself. A raw jsoup edit through `getSvgElement()` or `getElement()` has to call `flushLazy()` itself (`D_flush_per_mutation`).
 - `client.gwt` stands in for the GWT API the ported code calls — `AbstractWidget`'s attach flag, `Styles` over the `style` attribute, `DeferredCommand` running inline, `Animation` doing nothing. Nothing in it references Flow.
 - Attach state mirrors Flow's: `DrawingArea.onAttach/onDetach` walk the children and call `VectorObject.onAttach/onDetach`, which is what `isAttached()` reports.
 
@@ -25,6 +26,7 @@ ruler. Cap 12 KB — over it, research or doc-comment content has crept in.
 3. `add` calls `flushLazy()`, which registers `flush()` once via `UI.beforeClientResponse`.
 4. Before the response, `flush()` sets the `Div`'s `innerHTML` to the serialised `<svg>` and clears the registration.
 5. The client replaces the `Div`'s content wholesale; no per-shape state exists on the client.
+6. A later `circle.setFillColor("red")`, or any other mutator, ends in `changed()`. It walks `getParent()` through any `Group`s up to the canvas and calls `flushLazy()`, and steps 4–5 repeat.
 
 ## Where to start reading
 

@@ -49,6 +49,7 @@ public class Group extends VectorObject implements VectorObjectContainer {
 		childrens.add(vo);
 		getImpl().add(getElement(), vo.getElement(), vo.isAttached());
 		vo.setParent(this);
+		changed();
 		return vo;
 	}
 
@@ -72,6 +73,7 @@ public class Group extends VectorObject implements VectorObjectContainer {
 		vo.setParent(this);
 		getImpl().insert(getElement(), vo.getElement(), beforeIndex,
 				vo.isAttached());
+		changed();
 
 		return vo;
 	}
@@ -90,6 +92,7 @@ public class Group extends VectorObject implements VectorObjectContainer {
 		vo.setParent(null);
 		vo.getElement().remove();
 		childrens.remove(vo);
+		changed();
 		return vo;
 	}
 
@@ -105,6 +108,7 @@ public class Group extends VectorObject implements VectorObjectContainer {
 			return null;
 		}
 		getImpl().bringToFront(getElement(), vo.getElement());
+		changed();
 		return vo;
 	}
 

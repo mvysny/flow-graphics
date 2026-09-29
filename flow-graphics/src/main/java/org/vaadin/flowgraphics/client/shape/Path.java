@@ -275,5 +275,6 @@ public class Path extends Shape {
 
 	private void drawPath() {
 		getImpl().drawPath(getElement(), steps);
+		changed();
 	}
 }
