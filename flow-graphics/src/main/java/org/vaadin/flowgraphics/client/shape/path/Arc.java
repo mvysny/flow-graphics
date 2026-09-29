@@ -66,7 +66,7 @@ public class Arc extends LineTo {
 
 	@Override
 	public String getSVGString() {
-		return isRelativeCoords() ? "a" : "A" + getRx() + "," + getRy() + " "
+		return (isRelativeCoords() ? "a" : "A") + getRx() + "," + getRy() + " "
 				+ getxAxisRotation() + " " + (isLargeArc() ? "1" : "0") + ","
 				+ (isSweep() ? "1" : "0") + " " + getX() + "," + getY();
 	}

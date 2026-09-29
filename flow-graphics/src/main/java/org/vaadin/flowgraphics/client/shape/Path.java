@@ -129,7 +129,7 @@ public class Path extends Shape {
 	public void setStep(int index, PathStep step)
 			throws IllegalArgumentException {
 		if (index == 0
-				&& !(step instanceof MoveTo || ((MoveTo) step)
+				&& (step.getClass() != MoveTo.class || ((MoveTo) step)
 						.isRelativeCoords())) {
 			throw new IllegalArgumentException(
 					"The first step must be an absolute MoveTo step.");

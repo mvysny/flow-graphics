@@ -76,6 +76,6 @@ public class MoveTo extends ClosePath {
 
 	@Override
 	public String getSVGString() {
-		return isRelativeCoords() ? "m" : "M" + getX() + " " + getY();
+		return (isRelativeCoords() ? "m" : "M") + getX() + " " + getY();
 	}
 }

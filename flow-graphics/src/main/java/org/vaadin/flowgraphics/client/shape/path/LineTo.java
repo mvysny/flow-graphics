@@ -40,6 +40,6 @@ public class LineTo extends MoveTo {
 
 	@Override
 	public String getSVGString() {
-		return isRelativeCoords() ? "l" : "L" + getX() + " " + getY();
+		return (isRelativeCoords() ? "l" : "L") + getX() + " " + getY();
 	}
 }
