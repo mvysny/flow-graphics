@@ -53,10 +53,18 @@ of 1000 setters still costs one serialisation.
 
 ## Open questions
 
-- `Q_parent_walk`: `getParent()` returns `Widget`, and the chain is `VectorObject` → `Group`* →
-  `DrawingArea`. Walk it with `instanceof`, or cache the owning `DrawingArea` in `setParent`
-  (and clear it on detach)? Caching is O(1), but it has to be propagated to a group's children
-  when the group is re-parented.
+- `Q_parent_walk` (resolved: walk, don't cache): `changed()` follows `getParent()` while it is
+  a `VectorObject`, and calls `flushLazy()` if the walk ends at a `DrawingArea`. Otherwise it
+  does nothing. Only `DrawingArea` and `Group` call `setParent(this)`, and `Group` is a
+  `VectorObject`, so that covers every chain. The walk costs one step per level of group
+  nesting, which is nothing next to the serialisation it triggers. A cached owner would have to
+  be updated for the whole subtree on every `Group.add` / `insert` / `remove` and on every
+  re-parent. Missing one of those updates silently drops a setter, which is the very bug this
+  idea fixes. The walk reads the parent links that already exist, so it can't go stale. Edge
+  cases: setters in a constructor, or on a group that isn't on a canvas yet, find no
+  `DrawingArea` and do nothing, and `add` flushes later. A canvas that isn't attached to the page
+  still gets a `flushLazy()`. `UI.beforeClientResponse` postpones the task until the canvas is
+  attached (its javadoc, flow-server 23.4.1).
 - `Q_ui_lock` (resolved): the behaviour change is acceptable, since `add` / `insert` /
   `bringToFront` / `remove` already NPE off the UI thread and this only extends that rule to
   setters. `flushLazy()` checks `UI.getCurrent()` and throws `IllegalStateException` with a
@@ -73,11 +81,17 @@ of 1000 setters still costs one serialisation.
   returns `true` without comparing. So every `setProperty("innerHTML", …)` is sent in full, even
   when nothing changed. Checked in flow-server 23.4.1 (our floor) and 25.2.9. As a result, a
   setter that writes the value already there (a hover highlight re-setting the same colour)
-  still resends the whole SVG. If that matters, `flush()` can keep the last string it sent and
-  skip `setProperty` when `root.toString()` equals it. That costs a string compare it already
-  pays for when serialising, and it's safe as long as nothing but `flush()` writes `innerHTML`.
-- `Q_mutating_getSvgElement`: someone who edits `getSvgElement()` directly still has to call
-  `flushLazy()` themselves (its doc comment says so). Keep it that way?
+  still resends the whole SVG. That's accepted. Skipping an equal string in `flush()` would save
+  bandwidth, but GWT Graphics has no counterpart to it, and this project emulates rather than
+  improves.
+- `Q_mutating_getSvgElement` (resolved: keep it): someone who edits `getSvgElement()` or a
+  `VectorObject.getElement()` directly still has to call `flushLazy()` themselves. This is a gap
+  the port created, not upstream behaviour. Upstream had no `getSvgElement()` (`root` is
+  private), and a raw edit through GWT's `getElement()` hit the live DOM, so it needed no flush.
+  `getSvgElement()` came in with this port in `b7197de`. jsoup has no mutation events, so the gap
+  can't be closed. Having `getSvgElement()` call `flushLazy()` would only catch edits in the same
+  request, not a stored reference edited later. So the rule stays as documented, marked
+  `// @todo mavi` at `getSvgElement()`.
 
 ## Test to add
 

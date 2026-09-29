@@ -10,6 +10,7 @@ add-on, but works with Vaadin 23+.
 ## Promises
 
 - **Drop-in for GWT Graphics.** Same class names and API as the GWT add-on, so porting a component is an import rename plus `Div` for `Widget`.
+- **Emulate GWT Graphics, don't improve on it.** Behaviour matches the original, its bugs included; where the server side can't match, mark the gap `@todo mavi` rather than invent new semantics.
 - **Side-by-side with GWT Graphics.** Everything lives under `org.vaadin.flowgraphics`, never `org.vaadin.gwtgraphics`, so one classpath carries both during a gradual migration.
 - **Vaadin 23+ on Java 11.** The library jar is Java 11 bytecode and `compileOnly` on Vaadin, so it runs on whatever Flow version the app brings.
 
