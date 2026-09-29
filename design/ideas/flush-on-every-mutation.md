@@ -56,10 +56,15 @@ of 1000 setters still costs one serialisation.
   `DrawingArea`. Walk it with `instanceof`, or cache the owning `DrawingArea` in `setParent`
   (and clear it on detach)? Caching is O(1), but it has to be propagated to a group's children
   when the group is re-parented.
-- `Q_ui_lock`: today a setter called from a background thread silently does nothing visible.
-  After this change, `flushLazy()` → `UI.getCurrent()` makes it throw an NPE. That's arguably
-  better (it's loud, and it matches the invariant), but it's a behaviour change for a 1.0.x
-  line. Throw a clear `IllegalStateException` saying "use `ui.access()`" instead?
+- `Q_ui_lock` (resolved): the behaviour change is acceptable, since `add` / `insert` /
+  `bringToFront` / `remove` already NPE off the UI thread and this only extends that rule to
+  setters. `flushLazy()` checks `UI.getCurrent()` and throws `IllegalStateException` with a
+  message that tells the caller to wrap the change in `ui.access()`, so there's no bare NPE. The
+  check covers only the first mutation of a response (the `flushRegistration == null` guard), so
+  a background write racing an already-scheduled flush goes unnoticed. That's deliberate: a
+  per-call `VaadinSession.hasLock()` check is more than Flow does for its own components, and the
+  `AGENTS.md` invariant already states the rule. A detached canvas built on a background thread
+  now throws on setters too, not just on `add`, so build it inside `ui.access()`.
 - `Q_flow_skips_equal_property`: does Flow skip sending `innerHTML` when the new value equals
   the old one? If yes, the always-re-flush alternative is cheaper than it looks. Verify in
   flow-server's `ElementPropertyMap` before relying on it.
@@ -70,7 +75,9 @@ of 1000 setters still costs one serialisation.
 
 A Karibu test in `DrawingAreaTest`: `canvas.add(circle)`, `clientRoundtrip()`, then
 `circle.setFillColor("red")`, `clientRoundtrip()`, and assert `innerHTML` has `fill="red"`. Plus
-the same through a `Group` that is already on the canvas.
+the same through a `Group` that is already on the canvas. Also a test that calls
+`circle.setFillColor` on a drawn circle from a plain thread and expects the
+`IllegalStateException` (`Q_ui_lock`).
 
 ## On graduation
 
